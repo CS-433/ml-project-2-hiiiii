@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 from model import UNET
-from utils import (
+from utils_ import (
     load_checkpoint,
     save_checkpoint,
     get_loaders,
@@ -18,7 +18,7 @@ from utils import (
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 BATCH_SIZE = 8
-NUM_EPOCHS = 3
+NUM_EPOCHS = 50
 NUM_WORKERS = 2
 IMAGE_HEIGHT = 400  # 1280 originally
 IMAGE_WIDTH = 400  # 1918 originally
@@ -38,7 +38,7 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
 
         # forward
         with torch.cuda.amp.autocast():
-            predictions = model(data)
+            _, predictions = model(data)
             loss = loss_fn(predictions, targets)
 
         # backward

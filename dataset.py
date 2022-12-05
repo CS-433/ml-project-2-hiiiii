@@ -21,15 +21,15 @@ class RoadDataset(Dataset):
         image = cv2.imread(image_path)
         # read groundtruth and map to 0-1
         groundtruth = cv2.imread(groundtruth_path, cv2.IMREAD_GRAYSCALE)
-        groundtruth[groundtruth > 127] = 1
         groundtruth[groundtruth <= 127] = 0
+        groundtruth[groundtruth > 127] = 1
         # convert to numpy array
         image = np.array(image)
         groundtruth = np.array(groundtruth, dtype=np.float32)
         # transform
         if self.transform is not None:
-            augmentations = self.transform(image=image, groundtruth=groundtruth)
+            augmentations = self.transform(image=image, mask=groundtruth)
             image = augmentations['image']
-            groundtruth = augmentations['groundtruth']
+            groundtruth = augmentations['mask']
 
         return image, groundtruth

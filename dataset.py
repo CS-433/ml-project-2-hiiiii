@@ -4,12 +4,15 @@ from torch.utils.data import Dataset
 import numpy as np
 
 class RoadDataset(Dataset):
-    def __init__(self, image_dir, groundtruth_dir, transforms=None):
+    def __init__(self, image_dir, groundtruth_dir, transform=None):
         self.image_dir = image_dir
         self.groundtruth_dir = groundtruth_dir
-        self.transforms = transforms
+        self.transform = transform
         self.image_names = sorted(os.listdir(image_dir))
         self.groundtruth_names = sorted(os.listdir(groundtruth_dir))
+
+    def __len__(self):
+        return len(self.image_names)
 
     def __getitem__(self, idx):
         image_path = os.path.join(self.image_dir, self.image_names[idx])
@@ -24,8 +27,8 @@ class RoadDataset(Dataset):
         image = np.array(image)
         groundtruth = np.array(groundtruth)
         # transform
-        if self.transforms is not None:
-            augmentations = self.transforms(image, groundtruth)
+        if self.transform is not None:
+            augmentations = self.transform(image, groundtruth)
             image = augmentations['image']
             groundtruth = augmentations['groundtruth']
 

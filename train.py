@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 from model import UNET
-from utils_ import (
+from utils import (
     load_checkpoint,
     save_checkpoint,
     get_loaders,
@@ -95,34 +95,30 @@ def main():
         PIN_MEMORY,
     )
 
-    for idx, (img, mask) in enumerate(train_loader):
-        print(np.unique(img))
-        print(np.unique(mask))
-
-    # if LOAD_MODEL:
-    #     load_checkpoint(torch.load("my_checkpoint.pth.tar"), model)
+    if LOAD_MODEL:
+        load_checkpoint(torch.load("my_checkpoint.pth.tar"), model)
 
 
-    # check_accuracy(val_loader, model, device=DEVICE)
-    # scaler = torch.cuda.amp.GradScaler()
+    check_accuracy(val_loader, model, device=DEVICE)
+    scaler = torch.cuda.amp.GradScaler()
 
-    # for epoch in range(NUM_EPOCHS):
-    #     train_fn(train_loader, model, optimizer, loss_fn, scaler)
+    for epoch in range(NUM_EPOCHS):
+        train_fn(train_loader, model, optimizer, loss_fn, scaler)
 
-    #     # save model
-    #     checkpoint = {
-    #         "state_dict": model.state_dict(),
-    #         "optimizer":optimizer.state_dict(),
-    #     }
-    #     save_checkpoint(checkpoint)
+        # save model
+        checkpoint = {
+            "state_dict": model.state_dict(),
+            "optimizer":optimizer.state_dict(),
+        }
+        save_checkpoint(checkpoint)
 
-    #     # check accuracy
-    #     check_accuracy(val_loader, model, device=DEVICE)
+        # check accuracy
+        check_accuracy(val_loader, model, device=DEVICE)
 
-    #     # print some examples to a folder
-    #     save_predictions_as_imgs(
-    #         val_loader, model, folder="saved_images/", device=DEVICE
-    #     )
+        # print some examples to a folder
+        save_predictions_as_imgs(
+            val_loader, model, folder="saved_images/", device=DEVICE
+        )
 
 
 if __name__ == "__main__":

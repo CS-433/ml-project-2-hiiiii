@@ -25,10 +25,10 @@ class RoadDataset(Dataset):
         groundtruth[groundtruth <= 127] = 0
         # convert to numpy array
         image = np.array(image)
-        groundtruth = np.array(groundtruth)
+        groundtruth = np.array(groundtruth, dtype=np.float32)
         # transform
         if self.transform is not None:
-            augmentations = self.transform(image, groundtruth)
+            augmentations = self.transform(image=image, groundtruth=groundtruth)
             image = augmentations['image']
             groundtruth = augmentations['groundtruth']
 

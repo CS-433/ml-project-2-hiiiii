@@ -4,8 +4,9 @@ from albumentations.pytorch import ToTensorV2
 from tqdm import tqdm
 import torch.nn as nn
 import torch.optim as optim
+import numpy as np
 from model import UNET
-from utils import (
+from utils_ import (
     load_checkpoint,
     save_checkpoint,
     get_loaders,
@@ -15,10 +16,10 @@ from utils import (
 
 # Hyperparameters etc.
 LEARNING_RATE = 1e-4
-DEVICE = "cpu" # "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 16
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+BATCH_SIZE = 8
 NUM_EPOCHS = 3
-NUM_WORKERS = 4
+NUM_WORKERS = 2
 IMAGE_HEIGHT = 400  # 1280 originally
 IMAGE_WIDTH = 400  # 1918 originally
 PIN_MEMORY = True
@@ -94,30 +95,34 @@ def main():
         PIN_MEMORY,
     )
 
-    if LOAD_MODEL:
-        load_checkpoint(torch.load("my_checkpoint.pth.tar"), model)
+    for idx, (img, mask) in enumerate(train_loader):
+        print(np.unique(img))
+        print(np.unique(mask))
+
+    # if LOAD_MODEL:
+    #     load_checkpoint(torch.load("my_checkpoint.pth.tar"), model)
 
 
-    check_accuracy(val_loader, model, device=DEVICE)
-    scaler = torch.cuda.amp.GradScaler()
+    # check_accuracy(val_loader, model, device=DEVICE)
+    # scaler = torch.cuda.amp.GradScaler()
 
-    for epoch in range(NUM_EPOCHS):
-        train_fn(train_loader, model, optimizer, loss_fn, scaler)
+    # for epoch in range(NUM_EPOCHS):
+    #     train_fn(train_loader, model, optimizer, loss_fn, scaler)
 
-        # save model
-        checkpoint = {
-            "state_dict": model.state_dict(),
-            "optimizer":optimizer.state_dict(),
-        }
-        save_checkpoint(checkpoint)
+    #     # save model
+    #     checkpoint = {
+    #         "state_dict": model.state_dict(),
+    #         "optimizer":optimizer.state_dict(),
+    #     }
+    #     save_checkpoint(checkpoint)
 
-        # check accuracy
-        check_accuracy(val_loader, model, device=DEVICE)
+    #     # check accuracy
+    #     check_accuracy(val_loader, model, device=DEVICE)
 
-        # print some examples to a folder
-        save_predictions_as_imgs(
-            val_loader, model, folder="saved_images/", device=DEVICE
-        )
+    #     # print some examples to a folder
+    #     save_predictions_as_imgs(
+    #         val_loader, model, folder="saved_images/", device=DEVICE
+    #     )
 
 
 if __name__ == "__main__":

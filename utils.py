@@ -42,19 +42,19 @@ def get_loaders(
 
     return train_loader, val_loader
 
+@torch.no_grad()
 def save_predictions_as_imgs(
     loader, model, folder="saved_images/", device="cuda"
 ):
     model.eval()
     for idx, (x, y) in enumerate(loader):
         x = x.to(device=device)
-        with torch.no_grad():
-            _, preds_sig = model(x)
-            preds_sig = (preds_sig > 0.5).float()
-            preds_sig = preds_sig.cpu().numpy()
-            preds_sig[preds_sig > 0.5] = 255
+        predictions = model(x)
+        predictions = (predictions > 0.5).float()
+        predictions = predictions.cpu().numpy()
+        predictions[predictions > 0.5] = 255
         torchvision.utils.save_image(
-            torch.tensor(preds_sig), f"{folder}/pred_{idx}.png"
+            torch.tensor(predictions), f"{folder}/pred_{idx}.png"
         )
         torchvision.utils.save_image(y.unsqueeze(1), f"{folder}{idx}.png")
 

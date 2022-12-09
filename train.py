@@ -1,125 +1,81 @@
-import torch
-import albumentations as A
-from albumentations.pytorch import ToTensorV2
 from tqdm import tqdm
-import torch.nn as nn
-import torch.optim as optim
-import numpy as np
-from model import UNET
-from utils_ import (
-    load_checkpoint,
-    save_checkpoint,
-    get_loaders,
-    check_accuracy,
-    save_predictions_as_imgs,
-)
+from utils import *
+import constants as cst
 
-# Hyperparameters etc.
-LEARNING_RATE = 1e-4
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 8
-NUM_EPOCHS = 50
-NUM_WORKERS = 2
-IMAGE_HEIGHT = 400  # 1280 originally
-IMAGE_WIDTH = 400  # 1918 originally
-PIN_MEMORY = True
-LOAD_MODEL = False
-TRAIN_IMG_DIR = "train_data/train_images/"
-TRAIN_MASK_DIR = "train_data/train_masks/"
-VAL_IMG_DIR = "train_data/val_images/"
-VAL_MASK_DIR = "train_data/val_masks/"
-
-def train_fn(loader, model, optimizer, loss_fn, scaler):
-    loop = tqdm(loader)
-
-    for batch_idx, (data, targets) in enumerate(loop):
-        data = data.to(device=DEVICE)
-        targets = targets.float().unsqueeze(1).to(device=DEVICE)
-
-        # forward
-        with torch.cuda.amp.autocast():
-            _, predictions = model(data)
-            loss = loss_fn(predictions, targets)
-
-        # backward
+def train_epoch(model, optimizer, criterion, train_loader, epoch, device):
+    print(f"Epoch {epoch+1}/{cst.NUM_EPOCHS}")
+    model.train()
+    train_loss = 0
+    train_f1 = 0
+    for _, (data, target) in enumerate(tqdm(train_loader)):
+        # move data to device
+        data, target = data.to(device), target.unsqueeze(1).to(device)
+        # predict
+        predictions = model(data)
+        # compute loss
+        loss = criterion(predictions, target)
+        # zero the parameter gradients
         optimizer.zero_grad()
-        scaler.scale(loss).backward()
-        scaler.step(optimizer)
-        scaler.update()
+        loss.backward()
+        # update weights
+        optimizer.step()
+        # compute loss and f1 score
+        train_loss += loss.item()
+        train_f1 += f1_score(predictions, target)
+    # compute average loss and f1 score
+    train_loss /= len(train_loader)
+    train_f1 /= len(train_loader)
+    print('Train set: Average loss: {:.4f}\tAverage F1: {:.4f}'.format(train_loss, train_f1))
+    return train_loss, train_f1
 
-        # update tqdm loop
-        loop.set_postfix(loss=loss.item())
+@torch.no_grad()
+def validate(model, criterion, val_loader, device):
+    model.eval()
+    val_loss = 0
+    val_f1 = 0
+    for _, (data, target) in enumerate(val_loader):
+        # move data to device
+        data, target = data.to(device), target.unsqueeze(1).to(device)
+        # predict
+        predictions = model(data)
+        # compute loss and f1 score
+        val_loss += criterion(predictions, target).item()
+        val_f1 += f1_score(predictions, target)
+    # compute average loss and f1 score
+    val_loss /= len(val_loader)
+    val_f1 /= len(val_loader)
+    print('Validation set: Average loss: {:.4f}\tAverage F1: {:.4f}'.format(val_loss, val_f1))
+    model.train()
+    return val_loss, val_f1
 
+def train(model, optimizer, criterion, train_loader, val_loader):
+    train_loss_history = []
+    train_f1_history = []
+    val_loss_history = []
+    val_f1_history = []
 
-def main():
-    train_transform = A.Compose(
-        [
-            A.Resize(height=IMAGE_HEIGHT, width=IMAGE_WIDTH),
-            A.Rotate(limit=35, p=1.0),
-            A.HorizontalFlip(p=0.5),
-            A.VerticalFlip(p=0.1),
-            A.Normalize(
-                mean=[0.0, 0.0, 0.0],
-                std=[1.0, 1.0, 1.0],
-                max_pixel_value=255.0,
-            ),
-            ToTensorV2(),
-        ],
-    )
+    for epoch in range(cst.NUM_EPOCHS):
 
-    val_transforms = A.Compose(
-        [
-            A.Resize(height=IMAGE_HEIGHT, width=IMAGE_WIDTH),
-            A.Normalize(
-                mean=[0.0, 0.0, 0.0],
-                std=[1.0, 1.0, 1.0],
-                max_pixel_value=255.0,
-            ),
-            ToTensorV2(),
-        ],
-    )
+        train_loss, train_f1 = train_epoch(model, optimizer, criterion, train_loader, epoch, cst.DEVICE)
 
-    model = UNET(in_channels=3, out_channels=1).to(DEVICE)
-    loss_fn = nn.BCEWithLogitsLoss()
-    optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+        train_loss_history.append(train_loss)
+        train_f1_history.append(train_f1)
 
-    train_loader, val_loader = get_loaders(
-        TRAIN_IMG_DIR,
-        TRAIN_MASK_DIR,
-        VAL_IMG_DIR,
-        VAL_MASK_DIR,
-        BATCH_SIZE,
-        train_transform,
-        val_transforms,
-        NUM_WORKERS,
-        PIN_MEMORY,
-    )
+        val_loss, val_f1 = validate(model, criterion, val_loader, cst.DEVICE)
 
-    if LOAD_MODEL:
-        load_checkpoint(torch.load("my_checkpoint.pth.tar"), model)
+        val_loss_history.append(val_loss)
+        val_f1_history.append(val_f1)
 
+        # save model if the validation loss is the lowest so far
+        if val_loss == min(val_loss_history):
+            checkpoint = {
+                "state_dict": model.state_dict(),
+                "optimizer":optimizer.state_dict(),
+            }
+            save_checkpoint(checkpoint)
 
-    check_accuracy(val_loader, model, device=DEVICE)
-    scaler = torch.cuda.amp.GradScaler()
-
-    for epoch in range(NUM_EPOCHS):
-        train_fn(train_loader, model, optimizer, loss_fn, scaler)
-
-        # save model
-        checkpoint = {
-            "state_dict": model.state_dict(),
-            "optimizer":optimizer.state_dict(),
-        }
-        save_checkpoint(checkpoint)
-
-        # check accuracy
-        check_accuracy(val_loader, model, device=DEVICE)
-
-        # print some examples to a folder
         save_predictions_as_imgs(
-            val_loader, model, folder="saved_images/", device=DEVICE
+            val_loader, model, folder="saved_images/", device=cst.DEVICE
         )
-
-
-if __name__ == "__main__":
-    main()
+    
+    return train_loss_history, train_f1_history, val_loss_history, val_f1_history

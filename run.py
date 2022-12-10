@@ -1,5 +1,6 @@
 import torch
 import os
+import sys
 
 from model import UNET
 import constants as cst
@@ -8,9 +9,26 @@ from transforms_v2 import *
 from train import *
 
 def main():
+    # read arguments
+    print("Reading arguments...")
+    args = sys.argv
+    load_model = False
+    model_path = ""
+    if len(args) == 2 or len(args) > 3:
+        raise ValueError("Too many arguments")
+    elif len(args) == 3:
+        if args[1] == "load":
+            load_model = True
+        else:
+            raise ValueError("Invalid argument")
+        model_path = args[2]
     # create model
     print("Creating model...")
     model = UNET(in_channels=3, out_channels=1).to(cst.DEVICE)
+    if load_model:
+        load_checkpoint(torch.load(model_path), model)
+        predict_test_images(model)
+        exit()
     # define loss function and optimizer
     criterion = torch.nn.BCEWithLogitsLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=cst.LEARNING_RATE)

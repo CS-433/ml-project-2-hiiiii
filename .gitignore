@@ -1,5 +1,6 @@
 test_data/
 train_data/
+train_data_x4/
 saved_images/
 __pycache__/
 checkpoints/

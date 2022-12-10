@@ -73,9 +73,8 @@ def train(model, optimizer, criterion, train_loader, val_loader):
                 "optimizer":optimizer.state_dict(),
             }
             save_checkpoint(checkpoint)
-
-        save_predictions_as_imgs(
-            val_loader, model, folder="saved_images/", device=cst.DEVICE
-        )
+            save_predictions_as_imgs(
+                val_loader, model, folder="saved_images/", device=cst.DEVICE
+            )
     
     return train_loss_history, train_f1_history, val_loss_history, val_f1_history

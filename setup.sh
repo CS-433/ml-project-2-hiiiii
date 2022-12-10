@@ -12,6 +12,8 @@ pip3 install -r requirements.txt > /dev/null
 
 # Download data
 echo "Downloading data..."
+rm -rf train_data_x4.zip
+rm -rf test_data.zip
 wget http://116.203.219.58:1234/train_data_x4.zip
 wget http://116.203.219.58:1234/test_data.zip
 

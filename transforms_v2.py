@@ -4,7 +4,6 @@ from itertools import chain, combinations
 import constants as cst
 
 list_of_transforms = [
-    A.ToGray(p=1.0),
     A.HorizontalFlip(p=1.0),
     A.VerticalFlip(p=1.0),
 ]

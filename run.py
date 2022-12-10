@@ -34,6 +34,7 @@ def main():
         # run mask_to_submission.py
         print("Running mask_to_submission.py...")
         os.system("python3 mask_to_submission.py")
+        return
     # define loss function and optimizer
     criterion = torch.nn.BCEWithLogitsLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=cst.LEARNING_RATE)

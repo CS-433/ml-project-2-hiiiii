@@ -15,8 +15,7 @@ class RoadDataset(Dataset):
         self.mask_names = sorted(os.listdir(mask_dir))
 
     def __len__(self):
-        return 1
-        # return len(self.image_names) * len(self.transforms)
+        return len(self.image_names) * len(self.transforms)
 
     def __getitem__(self, idx):
         # get image and mask path

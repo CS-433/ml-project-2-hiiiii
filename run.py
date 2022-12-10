@@ -26,9 +26,14 @@ def main():
     print("Creating model...")
     model = UNET(in_channels=3, out_channels=1).to(cst.DEVICE)
     if load_model:
+        # load model
         load_checkpoint(torch.load(model_path), model)
+        # predict on test data
+        print("Predicting on test data...")
         predict_test_images(model)
-        exit()
+        # run mask_to_submission.py
+        print("Running mask_to_submission.py...")
+        os.system("python3 mask_to_submission.py")
     # define loss function and optimizer
     criterion = torch.nn.BCEWithLogitsLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=cst.LEARNING_RATE)

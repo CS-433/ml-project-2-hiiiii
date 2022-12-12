@@ -85,26 +85,14 @@ def split_test_image(image):
 
 def predict_image(image, image_folder, model, device):
     model.eval()
-    images_parts_pred = []
-    for idx, image_part in enumerate(split_test_image(image)):
-        image_part = val_transforms(image=image_part)["image"]
-        image_part = image_part.unsqueeze(0).to(device)
-        prediction = model(image_part)
-        prediction = torch.sigmoid(prediction)
-        prediction = (prediction > 0.5).float()
-        prediction = prediction.cpu().numpy()
-        images_parts_pred.append(prediction)
-        torchvision.utils.save_image(
-            torch.tensor(prediction), cst.TEST_IMAGE_DIR + image_folder + "/" + image_folder + "_pred_" + str(idx) + ".png"
-        )
-    # reconstruct the image
-    image_pred = np.zeros((608, 608))
-    image_pred[:304, :304] = images_parts_pred[0][0][0]
-    image_pred[:304, 304:] = images_parts_pred[1][0][0]
-    image_pred[304:, :304] = images_parts_pred[2][0][0]
-    image_pred[304:, 304:] = images_parts_pred[3][0][0]
+    image = test_transforms(image=image)["image"]
+    image = image.unsqueeze(0).to(device)
+    prediction = model(image)
+    prediction = torch.sigmoid(prediction)
+    prediction = (prediction > 0.5).float()
+    prediction = prediction.cpu().numpy()
     torchvision.utils.save_image(
-        torch.tensor(image_pred), cst.TEST_IMAGE_DIR + image_folder + "/" + image_folder + "_pred.png"
+        torch.tensor(prediction), cst.TEST_IMAGE_DIR + image_folder + "/" + image_folder + "_pred.png"
     )
 
 def predict_test_images(model):

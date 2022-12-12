@@ -6,32 +6,33 @@ import constants as cst
 list_of_transforms = [
     A.HorizontalFlip(p=1.0),
     A.VerticalFlip(p=1.0),
+    A.Transpose(p=1.0),
 ]
 
 list_of_rotations = [
-    # (15, 15),
-    # (-15, -15),
-    # (30, 30),
-    # (-30, -30),
+    (15, 15),
+    (-15, -15),
+    (30, 30),
+    (-30, -30),
     (45, 45),
     (-45, -45),
-    # (60, 60),
-    # (-60, -60),
-    # (75, 75),
-    # (-75, -75),
+    (60, 60),
+    (-60, -60),
+    (75, 75),
+    (-75, -75),
     (90, 90),
     (-90, -90),
     # (105, 105),
     # (-105, -105),
     # (120, 120),
     # (-120, -120),
-    (135, 135),
-    (-135, -135),
+    # (135, 135),
+    # (-135, -135),
     # (150, 150),
     # (-150, -150),
     # (165, 165),
     # (-165, -165),
-    (180, 180),
+    # (180, 180),
 ]
 
 # combine all transforms
@@ -74,6 +75,18 @@ def get_transforms():
 val_transforms = A.Compose(
     [
         A.Resize(height=cst.IMAGE_HEIGHT, width=cst.IMAGE_WIDTH),
+        A.Normalize(
+            mean=[0.0, 0.0, 0.0],
+            std=[1.0, 1.0, 1.0],
+            max_pixel_value=255.0,
+        ),
+        ToTensorV2(),
+    ],
+)
+
+test_transforms = A.Compose(
+    [
+        A.Resize(height=cst.TEST_IMAGE_HEIGHT, width=cst.TEST_IMAGE_WIDTH),
         A.Normalize(
             mean=[0.0, 0.0, 0.0],
             std=[1.0, 1.0, 1.0],

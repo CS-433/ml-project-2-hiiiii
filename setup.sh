@@ -20,7 +20,7 @@ wget http://116.203.219.58:1234/test_data.zip
 echo "Unzipping data..."
 rm -rf train_data
 rm -rf test_data
-unzip train_data.zip -d train_data > /dev/null
-unzip test_data.zip -d test_data > /dev/null
+unzip train_data.zip > /dev/null
+unzip test_data.zip > /dev/null
 
 echo "Done!"

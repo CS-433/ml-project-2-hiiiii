@@ -75,22 +75,39 @@ def f1_score(predictions, targets):
     return f1
 
 def split_test_image(image):
-    """Split a 608x608 image into 4 304x304 images"""
+    """Split a 608x608 image into 4 400x400 images"""
     image_parts = []
-    image_parts.append(image[:304, :304])
-    image_parts.append(image[:304, 304:])
-    image_parts.append(image[304:, :304])
-    image_parts.append(image[304:, 304:])
+    for i in [0, 208]:
+        for j in [0, 208]:
+            image_parts.append(image[i : i + 400, j : j + 400])
     return image_parts
 
 def predict_image(image, image_folder, model, device):
     model.eval()
-    image = test_transforms(image=image)["image"]
-    image = image.unsqueeze(0).to(device)
-    prediction = model(image)
-    prediction = torch.sigmoid(prediction)
-    prediction = (prediction > 0.5).float()
-    prediction = prediction.cpu().numpy()
+    # split image into 4 parts
+    all_predictions = []
+    for image_part in split_test_image(image):
+        image_part = test_transforms(image=image_part)["image"]
+        image_part = image_part.unsqueeze(0).to(device)
+        prediction = model(image_part)
+        prediction = torch.sigmoid(prediction)
+        prediction = (prediction > 0.5).float()
+        prediction = prediction.cpu().numpy()
+        all_predictions.append(prediction)
+    # combine the 4 parts, add if overlapping
+    prediction = np.zeros((608, 608))
+    prediction[0:400, 0:400] += all_predictions[0][0, 0, :, :]
+    prediction[0:400, 208:608] += all_predictions[1][0, 0, :, :]
+    prediction[208:608, 0:400] += all_predictions[2][0, 0, :, :]
+    prediction[208:608, 208:608] += all_predictions[3][0, 0, :, :]
+    # correct the overlapping parts
+    prediction[208:400, 0:208][prediction[208:400, 0:208] >= 1] = 1
+    prediction[0:208, 208:400][prediction[0:208, 208:400] >= 1] = 1
+    prediction[400:608, 208:400][prediction[400:608, 208:400] >= 1] = 1
+    prediction[208:400, 400:608][prediction[208:400, 400:608] >= 1] = 1
+    prediction[208:400, 208:400][prediction[208:400, 208:400] >= 2] = 1
+    prediction[208:400, 208:400][prediction[208:400, 208:400] < 2] = 0
+    # save the image
     torchvision.utils.save_image(
         torch.tensor(prediction), cst.TEST_IMAGE_DIR + image_folder + "/" + image_folder + "_pred.png"
     )

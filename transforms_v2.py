@@ -4,9 +4,9 @@ from itertools import chain, combinations
 import constants as cst
 
 list_of_transforms = [
-    A.HorizontalFlip(p=1.0),
-    A.VerticalFlip(p=1.0),
-    A.Transpose(p=1.0),
+    A.HorizontalFlip(p=1),
+    A.VerticalFlip(p=1),
+    A.Transpose(p=1),
 ]
 
 list_of_rotations = [
@@ -35,6 +35,17 @@ list_of_rotations = [
     (180, 180),
 ]
 
+list_of_random_rotations = [
+    (0, 45),
+    (45, 90),
+    (90, 135),
+    (135, 180),
+    (180, 225),
+    (225, 270),
+    (270, 315),
+    (315, 360)
+]
+
 # combine all transforms
 def powerset(iterable):
     s = list(iterable)
@@ -45,7 +56,7 @@ def powerset(iterable):
 def add_rotations(transforms):
     new_transforms = transforms.copy()
     for transform in transforms:
-        for rotation in list_of_rotations:
+        for rotation in list_of_random_rotations:
             new_transforms.append([A.Rotate(limit=rotation, p=1.0), *transform])
     return new_transforms
 

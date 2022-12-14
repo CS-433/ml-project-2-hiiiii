@@ -72,12 +72,12 @@ def add_resize_and_normalization(transforms):
     return new_transforms
 
 def get_transforms():
-    # transforms = list(powerset(list_of_transforms))
-    # transforms = add_rotations(transforms)
-    transforms = []
-    for transform in list_of_transforms:
-        transforms.append([transform])
-    transforms = rotations(transforms)
+    transforms = list(powerset(list_of_transforms))
+    transforms = add_rotations(transforms)
+    # transforms = []
+    # for transform in list_of_transforms:
+    #     transforms.append([transform])
+    # transforms = rotations(transforms)
     transforms = add_resize_and_normalization(transforms)
     return transforms
 

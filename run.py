@@ -16,20 +16,27 @@ def main():
     args = sys.argv
     load_model = False
     model_path = ""
-    if len(args) == 2 or len(args) > 3:
-        raise ValueError("Too many arguments")
-    elif len(args) == 3:
+    predict = False
+    if len(args) == 2 or len(args) > 4:
+        raise ValueError("Invalid number of arguments")
+    elif len(args) == 3 or len(args) == 4:
         if args[1] == "load":
             load_model = True
         else:
             raise ValueError("Invalid argument")
         model_path = args[2]
+    if len(args) == 4:
+        if args[3] == "predict":
+            predict = True
+        else:
+            raise ValueError("Invalid argument")
     # create model
     print("Creating model...")
     model = VGGUNET(in_channels=3, out_channels=1).to(cst.DEVICE)
     if load_model:
         # load model
         load_checkpoint(torch.load(model_path), model)
+    if predict:
         # predict on test data
         print("Predicting on test data...")
         predict_test_images(model)

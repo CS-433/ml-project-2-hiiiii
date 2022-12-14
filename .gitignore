@@ -1,7 +1,12 @@
 test_data/
+test_data.zip
 train_data/
+train_data.zip
+train_data_x4/
+train_data_x4.zip
 saved_images/
 __pycache__/
-my_checkpoint.pth.tar
+checkpoints/
+data_history/
 .ipynb_checkpoints/
-submission.csv
+

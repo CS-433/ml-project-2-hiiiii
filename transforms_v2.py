@@ -10,28 +10,28 @@ list_of_transforms = [
 ]
 
 list_of_rotations = [
-    # (15, 15),
-    # (-15, -15),
-    # (30, 30),
-    # (-30, -30),
+    (15, 15),
+    (-15, -15),
+    (30, 30),
+    (-30, -30),
     (45, 45),
     (-45, -45),
-    # (60, 60),
-    # (-60, -60),
-    # (75, 75),
-    # (-75, -75),
+    (60, 60),
+    (-60, -60),
+    (75, 75),
+    (-75, -75),
     (90, 90),
     (-90, -90),
-    # (105, 105),
-    # (-105, -105),
-    # (120, 120),
-    # (-120, -120),
+    (105, 105),
+    (-105, -105),
+    (120, 120),
+    (-120, -120),
     (135, 135),
     (-135, -135),
-    # (150, 150),
-    # (-150, -150),
-    # (165, 165),
-    # (-165, -165),
+    (150, 150),
+    (-150, -150),
+    (165, 165),
+    (-165, -165),
     (180, 180),
 ]
 
@@ -48,6 +48,11 @@ def add_rotations(transforms):
         for rotation in list_of_rotations:
             new_transforms.append([A.Rotate(limit=rotation, p=1.0), *transform])
     return new_transforms
+
+def rotations(transforms=[]):
+    for rotation in list_of_rotations:
+        transforms.append([A.Rotate(limit=rotation, p=1.0)])
+    return transforms
 
 def add_resize_and_normalization(transforms):
     new_transforms = []
@@ -67,8 +72,12 @@ def add_resize_and_normalization(transforms):
     return new_transforms
 
 def get_transforms():
-    transforms = list(powerset(list_of_transforms))
-    transforms = add_rotations(transforms)
+    # transforms = list(powerset(list_of_transforms))
+    # transforms = add_rotations(transforms)
+    transforms = []
+    for transform in list_of_transforms:
+        transforms.append([transform])
+    transforms = rotations(transforms)
     transforms = add_resize_and_normalization(transforms)
     return transforms
 

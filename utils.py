@@ -87,6 +87,7 @@ def predict_image(image, image_folder, model, device):
     # split image into 4 parts
     all_predictions = []
     for image_part in split_test_image(image):
+        print("image_part.shape", image_part.shape)
         image_part = test_transforms(image=image_part)["image"]
         image_part = image_part.unsqueeze(0).to(device)
         prediction = model(image_part)

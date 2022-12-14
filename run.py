@@ -2,7 +2,8 @@ import torch
 import os
 import sys
 
-from model import UNET
+# from model import UNET
+from vggunet import VGGUNET
 import constants as cst
 from utils import *
 from transforms_v2 import *
@@ -25,7 +26,7 @@ def main():
         model_path = args[2]
     # create model
     print("Creating model...")
-    model = UNET(in_channels=3, out_channels=1).to(cst.DEVICE)
+    model = VGGUNET(in_channels=3, out_channels=1).to(cst.DEVICE)
     if load_model:
         # load model
         load_checkpoint(torch.load(model_path), model)

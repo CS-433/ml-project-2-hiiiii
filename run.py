@@ -9,6 +9,7 @@ from transforms_v2 import *
 from train import *
 
 def main():
+    torch.cuda.empty_cache()
     # read arguments
     print("Reading arguments...")
     args = sys.argv
@@ -37,7 +38,7 @@ def main():
         return
     # define loss function and optimizer
     criterion = torch.nn.BCEWithLogitsLoss()
-    optimizer = torch.optim.AdamW(model.parameters(), lr=cst.LEARNING_RATE)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=cst.LEARNING_RATE, weight_decay=cst.WEIGHT_DECAY)
     # load data
     print("Loading data...")
     train_loader, val_loader = get_loaders(

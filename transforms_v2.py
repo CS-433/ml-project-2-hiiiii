@@ -83,13 +83,24 @@ def add_resize_and_normalization(transforms):
     return new_transforms
 
 def get_transforms():
-    transforms = list(powerset(list_of_transforms))
-    transforms = add_rotations(transforms)
-    # transforms = []
-    # for transform in list_of_transforms:
-    #     transforms.append([transform])
-    # transforms = rotations(transforms)
-    transforms = add_resize_and_normalization(transforms)
+    # transforms = list(powerset(list_of_transforms))
+    # transforms = add_rotations(transforms)
+    # # transforms = []
+    # # for transform in list_of_transforms:
+    # #     transforms.append([transform])
+    # # transforms = rotations(transforms)
+    # transforms = add_resize_and_normalization(transforms)
+    transforms = [A.Compose(
+        [
+            A.Resize(height=cst.IMAGE_HEIGHT, width=cst.IMAGE_WIDTH),
+            A.Normalize(
+                mean=[0.0, 0.0, 0.0],
+                std=[1.0, 1.0, 1.0],
+                max_pixel_value=255.0,
+            ),
+            ToTensorV2(),
+        ]
+    )]
     return transforms
 
 val_transforms = A.Compose(

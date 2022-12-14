@@ -82,21 +82,24 @@ class VGGUNET(nn.Module):
             in_channels = feature
 
         # Up part of VGGUNET
+        in_channels = in_channels*2
         for feature in reversed(features_quadruple):
             self.ups.append(
                 nn.ConvTranspose2d(
-                    feature*2, feature, kernel_size=2, stride=2,
+                    in_channels, feature, kernel_size=2, stride=2,
                 )
             )
             self.ups.append(QuadrupleConv(feature*2, feature))
+            in_channels = feature
 
         for feature in reversed(features_double):
             self.ups.append(
                 nn.ConvTranspose2d(
-                    feature*2, feature, kernel_size=2, stride=2,
+                    in_channels, feature, kernel_size=2, stride=2,
                 )
             )
             self.ups.append(DoubleConv(feature*2, feature))
+            in_channels = feature
 
         self.bottleneck = DoubleConvBottleneck(features_quadruple[-1], features_quadruple[-1]*2)
         self.final_conv = nn.Conv2d(in_channels, out_channels, kernel_size=1)

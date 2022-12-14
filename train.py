@@ -25,7 +25,7 @@ def train_epoch(model, optimizer, criterion, train_loader, epoch, device):
     # compute average loss and f1 score
     train_loss /= len(train_loader)
     train_f1 /= len(train_loader)
-    print('Train set: Average loss: {:.4f}\tAverage F1: {:.4f}'.format(train_loss, train_f1))
+    print('\nTrain set: Average loss: {:.4f}\tAverage F1: {:.4f}'.format(train_loss, train_f1))
     return train_loss, train_f1
 
 @torch.no_grad()

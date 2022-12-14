@@ -37,9 +37,6 @@ def main():
         print("Running mask_to_submission.py...")
         os.system("python3 mask_to_submission.py")
         return
-    # define loss function and optimizer
-    criterion = torch.nn.BCEWithLogitsLoss()
-    optimizer = torch.optim.AdamW(model.parameters(), lr=cst.LEARNING_RATE, weight_decay=cst.WEIGHT_DECAY)
     # load data
     print("Loading data...")
     train_loader, val_loader = get_loaders(
@@ -53,6 +50,13 @@ def main():
         num_workers=cst.NUM_WORKERS,
         pin_memory=cst.PIN_MEMORY,
     )
+    # define loss function, optimizer and schedulers
+    criterion = torch.nn.BCEWithLogitsLoss()
+    optimizer = torch.optim.AdamW(model.parameters(), lr=cst.LEARNING_RATE, weight_decay=cst.WEIGHT_DECAY)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+        optimizer,
+        T_max=(cst.NUM_EPOCHS * len(train_loader.dataset)) // cst.BATCH_SIZE,
+    )
     # check that cuda is available
     print("Cuda is available: ", torch.cuda.is_available())
     # train model
@@ -61,6 +65,7 @@ def main():
         model,
         optimizer,
         criterion,
+        scheduler,
         train_loader,
         val_loader
     )

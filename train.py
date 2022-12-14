@@ -2,7 +2,7 @@ from tqdm import tqdm
 from utils import *
 import constants as cst
 
-def train_epoch(model, optimizer, criterion, train_loader, epoch, device):
+def train_epoch(model, optimizer, criterion, scheduler, train_loader, epoch, device):
     print(f"Epoch {epoch+1}/{cst.NUM_EPOCHS}")
     model.train()
     train_loss = 0
@@ -19,6 +19,8 @@ def train_epoch(model, optimizer, criterion, train_loader, epoch, device):
         loss.backward()
         # update weights
         optimizer.step()
+        # update learning rate
+        scheduler.step()
         # compute loss and f1 score
         train_loss += loss.item()
         train_f1 += f1_score(predictions, target)
@@ -48,7 +50,7 @@ def validate(model, criterion, val_loader, device):
     model.train()
     return val_loss, val_f1
 
-def train(model, optimizer, criterion, train_loader, val_loader):
+def train(model, optimizer, criterion, scheduler, train_loader, val_loader):
     train_loss_history = []
     train_f1_history = []
     val_loss_history = []
@@ -56,7 +58,7 @@ def train(model, optimizer, criterion, train_loader, val_loader):
 
     for epoch in range(cst.NUM_EPOCHS):
 
-        train_loss, train_f1 = train_epoch(model, optimizer, criterion, train_loader, epoch, cst.DEVICE)
+        train_loss, train_f1 = train_epoch(model, optimizer, criterion, scheduler, train_loader, epoch, cst.DEVICE)
 
         train_loss_history.append(train_loss)
         train_f1_history.append(train_f1)

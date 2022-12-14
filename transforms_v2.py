@@ -104,14 +104,4 @@ val_transforms = A.Compose(
     ],
 )
 
-test_transforms = A.Compose(
-    [
-        A.Resize(height=cst.TEST_IMAGE_HEIGHT, width=cst.TEST_IMAGE_WIDTH),
-        A.Normalize(
-            mean=[0.0, 0.0, 0.0],
-            std=[1.0, 1.0, 1.0],
-            max_pixel_value=255.0,
-        ),
-        ToTensorV2(),
-    ],
-)
+test_transforms = val_transforms

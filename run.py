@@ -53,7 +53,7 @@ def main():
         val_mask_dir=cst.VAL_MASK_DIR,
         batch_size=cst.BATCH_SIZE,
         train_transform=get_train_transforms(),
-        val_transform=get_val_transforms(),
+        val_transform=[val_transforms],
         num_workers=cst.NUM_WORKERS,
         pin_memory=cst.PIN_MEMORY,
     )

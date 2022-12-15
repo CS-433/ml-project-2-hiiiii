@@ -87,12 +87,22 @@ def predict_image(image, image_folder, model, device):
     # split image into 4 parts
     all_predictions = []
     for image_part in split_test_image(image):
-        image_part = test_transforms(image=image_part)["image"]
-        image_part = image_part.unsqueeze(0).to(device)
-        prediction = model(image_part)
-        prediction = torch.sigmoid(prediction)
-        prediction = (prediction > 0.5).float()
-        prediction = prediction.cpu().numpy()
+        prediction = np.zeros((400, 400))
+        for transform, inverse_transform in zip(
+            get_test_transforms(), get_inverse_test_transforms()
+        ):
+            image_part_transformed = transform(image=image_part)["image"]
+            image_part_transformed = image_part_transformed.unsqueeze(0).to(device)
+            prediction = model(image_part_transformed)
+            prediction = torch.sigmoid(prediction)
+            prediction = (prediction > 0.5).float()
+            prediction = prediction.cpu().numpy()
+            prediction_transformed = inverse_transform(image=prediction)["image"]
+            print("PREDICTION TRANSFORMED shape", prediction_transformed.shape)
+            prediction += prediction_transformed
+        # treshold the prediction
+        prediction[prediction < len(get_test_transforms()) / 2] = 0
+        prediction[prediction >= len(get_test_transforms()) / 2] = 1
         all_predictions.append(prediction)
     # combine the 4 parts, add if overlapping
     prediction = np.zeros((608, 608))

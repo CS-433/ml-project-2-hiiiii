@@ -19,9 +19,9 @@ class RoadDataset(Dataset):
 
     def __getitem__(self, idx):
         # get image and mask path
-        idx = idx % len(self.image_names)
-        image_path = os.path.join(self.image_dir, self.image_names[idx])
-        mask_path = os.path.join(self.mask_dir, self.mask_names[idx])
+        image_idx = idx % len(self.image_names)
+        image_path = os.path.join(self.image_dir, self.image_names[image_idx])
+        mask_path = os.path.join(self.mask_dir, self.mask_names[image_idx])
         # read image
         image = cv2.imread(image_path)
         # read mask and map to 0-1
@@ -31,7 +31,8 @@ class RoadDataset(Dataset):
         image = np.array(image)
         mask = np.array(mask, dtype=np.float32)
         # apply the corresponding transform
-        transform = self.transforms[idx // len(self.image_names)]
+        transform_idx = idx // len(self.image_names)
+        transform = self.transforms[transform_idx]
         augmentations = transform(image=image, mask=mask)
         image = augmentations['image']
         mask = augmentations['mask']

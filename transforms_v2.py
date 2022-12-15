@@ -94,7 +94,8 @@ def get_train_transforms():
     transforms = []
     for transform in list_of_transforms:
         transforms.append([transform])
-    transforms = rotations(transforms)
+    transforms = add_rotations(transforms)
+    # transforms = rotations(transforms)
     transforms = add_resize_and_normalization(transforms)
     return transforms
 

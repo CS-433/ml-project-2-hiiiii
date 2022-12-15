@@ -97,6 +97,7 @@ def predict_image(image, image_folder, model, device):
             prediction = torch.sigmoid(prediction)
             prediction = (prediction > 0.5).float()
             prediction = prediction.cpu().numpy()
+            print("PREDICTION shape", prediction.shape)
             prediction_transformed = inverse_transform(image=prediction)["image"]
             print("PREDICTION TRANSFORMED shape", prediction_transformed.shape)
             prediction += prediction_transformed

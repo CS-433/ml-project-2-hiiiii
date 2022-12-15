@@ -28,7 +28,7 @@ def train_epoch(model, optimizer, criterion, scheduler, train_loader, epoch, dev
     # compute average loss and f1 score
     train_loss /= len(train_loader)
     train_f1 /= len(train_loader)
-    print('\nTrain set: Average loss: {:.4f}\tAverage F1: {:.4f}'.format(train_loss, train_f1))
+    print('\nTrain set: \t\tAverage loss: {:.4f}\tAverage F1: {:.4f}'.format(train_loss, train_f1))
     return train_loss, train_f1
 
 @torch.no_grad()
@@ -37,7 +37,6 @@ def validate(model, criterion, val_loader, device):
     val_loss = 0
     val_f1 = 0
     for idx, (data, target) in enumerate(val_loader):
-        print(idx)
         # move data to device
         data, target = data.to(device), target.unsqueeze(1).to(device)
         # predict
@@ -48,7 +47,7 @@ def validate(model, criterion, val_loader, device):
     # compute average loss and f1 score
     val_loss /= len(val_loader)
     val_f1 /= len(val_loader)
-    print('Validation set: Average loss: {:.4f}\tAverage F1: {:.4f}'.format(val_loss, val_f1))
+    print('Validation set: \tAverage loss: {:.4f}\tAverage F1: {:.4f}'.format(val_loss, val_f1))
     model.train()
     return val_loss, val_f1
 

@@ -9,7 +9,7 @@ import constants as cst
 from transforms_v2 import *
 
 def save_checkpoint(state, filename="checkpoints/my_checkpoint.pth.tar"):
-    print("=> Saving checkpoint")
+    print("=> Saving checkpoint\n")
     torch.save(state, filename)
 
 def load_checkpoint(checkpoint, model):

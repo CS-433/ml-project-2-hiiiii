@@ -102,6 +102,8 @@ def predict_image(image, image_folder, model, device):
             print("PREDICTION shape", prediction.shape)
             prediction_transformed = inverse_transform(image=prediction)["image"]
             print("PREDICTION TRANSFORMED shape", prediction_transformed.shape)
+            prediction_transformed = prediction_transformed[0, :, :]
+            print("PREDICTION TRANSFORMED shape", prediction_transformed.shape)
             prediction += prediction_transformed
         # treshold the prediction
         prediction[prediction < len(get_test_transforms()) / 2] = 0

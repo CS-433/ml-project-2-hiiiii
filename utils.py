@@ -105,8 +105,8 @@ def predict_image(image, image_folder, model, device):
     prediction[0:208, 208:400][prediction[0:208, 208:400] >= 1] = 1
     prediction[400:608, 208:400][prediction[400:608, 208:400] >= 1] = 1
     prediction[208:400, 400:608][prediction[208:400, 400:608] >= 1] = 1
-    prediction[208:400, 208:400][prediction[208:400, 208:400] >= 2] = 1
     prediction[208:400, 208:400][prediction[208:400, 208:400] < 2] = 0
+    prediction[208:400, 208:400][prediction[208:400, 208:400] >= 2] = 1
     # save the image
     torchvision.utils.save_image(
         torch.tensor(prediction), cst.TEST_IMAGE_DIR + image_folder + "/" + image_folder + "_pred.png"

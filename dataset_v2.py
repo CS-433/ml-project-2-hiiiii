@@ -33,7 +33,7 @@ class RoadDataset(Dataset):
         # apply the corresponding transform
         print("len(self.transforms): ", len(self.transforms))
         print("idx: ", idx)
-        transform_idx = idx // len(self.transforms)
+        transform_idx = idx // len(self.image_names)
         print("transform_idx: ", transform_idx)
         transform = self.transforms[transform_idx]
         augmentations = transform(image=image, mask=mask)

@@ -61,7 +61,7 @@ def add_rotations(transforms):
     return new_transforms
 
 def rotations(transforms=[]):
-    for rotation in list_of_rotations:
+    for rotation in list_of_random_rotations:
         transforms.append([A.Rotate(limit=rotation, p=1.0)])
     return transforms
 
@@ -83,12 +83,12 @@ def add_resize_and_normalization(transforms):
     return new_transforms
 
 def get_transforms():
-    transforms = list(powerset(list_of_transforms))
-    transforms = add_rotations(transforms)
-    # transforms = []
-    # for transform in list_of_transforms:
-    #     transforms.append([transform])
-    # transforms = rotations(transforms)
+    # transforms = list(powerset(list_of_transforms))
+    # transforms = add_rotations(transforms)
+    transforms = []
+    for transform in list_of_transforms:
+        transforms.append([transform])
+    transforms = rotations(transforms)
     transforms = add_resize_and_normalization(transforms)
     return transforms
 

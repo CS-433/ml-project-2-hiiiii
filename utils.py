@@ -87,7 +87,7 @@ def predict_image(image, image_folder, model, device):
     # split image into 4 parts
     all_predictions = []
     for image_part in split_test_image(image):
-        prediction = np.zeros((400, 400))
+        all_predictions_part = np.zeros((400, 400))
         for transform, inverse_transform in zip(
             get_test_transforms(), get_inverse_test_transforms()
         ):
@@ -100,11 +100,11 @@ def predict_image(image, image_folder, model, device):
             prediction = prediction[0, 0, :, :]
             prediction_transformed = inverse_transform(image=prediction)["image"]
             prediction_transformed = prediction_transformed[0, :, :].numpy()
-            prediction += prediction_transformed
+            all_predictions_part += prediction_transformed
         # treshold the prediction
-        prediction[prediction < len(get_test_transforms()) / 2] = 0
-        prediction[prediction >= len(get_test_transforms()) / 2] = 1
-        all_predictions.append(prediction)
+        all_predictions_part[all_predictions_part < len(get_test_transforms()) / 2] = 0
+        all_predictions_part[all_predictions_part >= len(get_test_transforms()) / 2] = 1
+        all_predictions.append(all_predictions_part)
     # combine the 4 parts, add if overlapping
     prediction = np.zeros((608, 608))
     prediction[0:400, 0:400] += all_predictions[0]

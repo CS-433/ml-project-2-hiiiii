@@ -3,8 +3,8 @@ import os
 import sys
 
 # from model import UNET
-# from vggunet import VGGUNET
-from resunet import RESUNET
+from vggunet import VGGUNET
+# from resunet import RESUNET
 import constants as cst
 from utils import *
 from transforms_v2 import *
@@ -33,7 +33,7 @@ def main():
             raise ValueError("Invalid argument")
     # create model
     print("Creating model...")
-    model = RESUNET(in_channels=3, out_channels=1).to(cst.DEVICE)
+    model = VGGUNET(in_channels=3, out_channels=1).to(cst.DEVICE)
     if load_model:
         # load model
         load_checkpoint(torch.load(model_path), model)

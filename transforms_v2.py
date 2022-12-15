@@ -103,15 +103,17 @@ list_of_val_transforms = [
     A.Compose([]),
     A.HorizontalFlip(p=1),
     A.VerticalFlip(p=1),
+    A.Transpose(p=1),
     A.Rotate(limit=(90, 90), p=1.0),
     A.Rotate(limit=(180, 180), p=1.0),
-    A.Rotate(limit=(270, 270), p=1.0)
+    A.Rotate(limit=(270, 270), p=1.0),
 ]
 
 list_of_inverse_val_transforms = [
     A.Compose([]),
     A.HorizontalFlip(p=1),
     A.VerticalFlip(p=1),
+    A.Transpose(p=1),
     A.Rotate(limit=(-90, -90), p=1.0),
     A.Rotate(limit=(-180, -180), p=1.0),
     A.Rotate(limit=(-270, -270), p=1.0)

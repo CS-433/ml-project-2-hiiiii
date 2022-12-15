@@ -21,7 +21,7 @@ def train_epoch(model, optimizer, criterion, scheduler, train_loader, epoch, dev
         # update weights
         optimizer.step()
         # update learning rate
-        # scheduler.step()
+        scheduler.step()
         # compute loss and f1 score
         train_loss += loss.item()
         train_f1 += f1_score(predictions, target)

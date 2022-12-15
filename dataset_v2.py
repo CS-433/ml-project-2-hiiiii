@@ -31,7 +31,7 @@ class RoadDataset(Dataset):
         image = np.array(image)
         mask = np.array(mask, dtype=np.float32)
         # apply the corresponding transform
-        transform_idx = idx // len(self.image_names)
+        transform_idx = idx // len(self.transforms)
         transform = self.transforms[transform_idx]
         augmentations = transform(image=image, mask=mask)
         image = augmentations['image']

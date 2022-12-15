@@ -112,10 +112,10 @@ def predict_image(image, image_folder, model, device):
         all_predictions.append(prediction)
     # combine the 4 parts, add if overlapping
     prediction = np.zeros((608, 608))
-    prediction[0:400, 0:400] += all_predictions[0][0, 0, :, :]
-    prediction[0:400, 208:608] += all_predictions[1][0, 0, :, :]
-    prediction[208:608, 0:400] += all_predictions[2][0, 0, :, :]
-    prediction[208:608, 208:608] += all_predictions[3][0, 0, :, :]
+    prediction[0:400, 0:400] += all_predictions[0]
+    prediction[0:400, 208:608] += all_predictions[1]
+    prediction[208:608, 0:400] += all_predictions[2]
+    prediction[208:608, 208:608] += all_predictions[3]
     # correct the overlapping parts
     prediction[208:400, 0:208][prediction[208:400, 0:208] >= 1] = 1
     prediction[0:208, 208:400][prediction[0:208, 208:400] >= 1] = 1

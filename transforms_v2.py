@@ -82,7 +82,7 @@ def add_resize_and_normalization(transforms):
         ))
     return new_transforms
 
-def get_transforms():
+def get_train_transforms():
     # transforms = list(powerset(list_of_transforms))
     # transforms = add_rotations(transforms)
     transforms = []
@@ -90,6 +90,58 @@ def get_transforms():
         transforms.append([transform])
     transforms = rotations(transforms)
     transforms = add_resize_and_normalization(transforms)
+    return transforms
+
+list_of_val_transforms = [
+    A.Compose([]),
+    A.HorizontalFlip(p=1),
+    A.VerticalFlip(p=1),
+    A.Rotate(limit=(90, 90), p=1.0),
+    A.Rotate(limit=(180, 180), p=1.0),
+    A.Rotate(limit=(270, 270), p=1.0)
+]
+
+list_of_inverse_val_transforms = [
+    A.Compose([]),
+    A.HorizontalFlip(p=1),
+    A.VerticalFlip(p=1),
+    A.Rotate(limit=(-90, -90), p=1.0),
+    A.Rotate(limit=(-180, -180), p=1.0),
+    A.Rotate(limit=(-270, -270), p=1.0)
+]
+
+def get_val_transforms():
+    transforms = []
+    for transform in list_of_val_transforms:
+        transforms.append(A.Compose(
+            [
+                A.Resize(height=cst.IMAGE_HEIGHT, width=cst.IMAGE_WIDTH),
+                transform,
+                A.Normalize(
+                    mean=[0.0, 0.0, 0.0],
+                    std=[1.0, 1.0, 1.0],
+                    max_pixel_value=255.0,
+                ),
+                ToTensorV2(),
+            ]
+        ))
+    return transforms
+
+def get_inverse_val_transforms():
+    transforms = []
+    for transform in list_of_inverse_val_transforms:
+        transforms.append(A.Compose(
+            [
+                A.Resize(height=cst.IMAGE_HEIGHT, width=cst.IMAGE_WIDTH),
+                transform,
+                A.Normalize(
+                    mean=[0.0, 0.0, 0.0],
+                    std=[1.0, 1.0, 1.0],
+                    max_pixel_value=255.0,
+                ),
+                ToTensorV2(),
+            ]
+        ))
     return transforms
 
 val_transforms = A.Compose(

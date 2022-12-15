@@ -52,8 +52,8 @@ def main():
         val_image_dir=cst.VAL_IMAGE_DIR,
         val_mask_dir=cst.VAL_MASK_DIR,
         batch_size=cst.BATCH_SIZE,
-        train_transform=get_transforms(),
-        val_transform=[val_transforms],
+        train_transform=get_train_transforms(),
+        val_transform=get_val_transforms(),
         num_workers=cst.NUM_WORKERS,
         pin_memory=cst.PIN_MEMORY,
     )

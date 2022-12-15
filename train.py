@@ -1,6 +1,7 @@
 from tqdm import tqdm
 from utils import *
 import constants as cst
+from transforms_v2 import *
 
 def train_epoch(model, optimizer, criterion, scheduler, train_loader, epoch, device):
     print(f"Epoch {epoch+1}/{cst.NUM_EPOCHS}")
@@ -35,7 +36,8 @@ def validate(model, criterion, val_loader, device):
     model.eval()
     val_loss = 0
     val_f1 = 0
-    for _, (data, target) in enumerate(val_loader):
+    for idx, (data, target) in enumerate(val_loader):
+        print(idx)
         # move data to device
         data, target = data.to(device), target.unsqueeze(1).to(device)
         # predict

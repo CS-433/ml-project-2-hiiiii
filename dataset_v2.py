@@ -15,7 +15,7 @@ class RoadDataset(Dataset):
         self.mask_names = sorted(os.listdir(mask_dir))
 
     def __len__(self):
-        return len(self.image_names) * len(self.transforms)
+        return 18 #len(self.image_names) * len(self.transforms)
 
     def __getitem__(self, idx):
         # get image and mask path
@@ -32,6 +32,8 @@ class RoadDataset(Dataset):
         mask = np.array(mask, dtype=np.float32)
         # apply the corresponding transform
         transform_idx = idx // len(self.transforms)
+        print("len(self.transforms) = ", len(self.transforms))
+        print("transform_idx = ", transform_idx)
         transform = self.transforms[transform_idx]
         augmentations = transform(image=image, mask=mask)
         image = augmentations['image']

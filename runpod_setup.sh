@@ -12,9 +12,4 @@ apt-get autoremove -y
 echo "Installing required packages"
 apt-get install unzip ffmpeg libsm6 libxext6 nano -y
 
-# Generate new ssh keys
-echo "Generating new ssh keys"
-ssh-keygen
-cat /root/.ssh/id_rsa.pub
-
 echo "Done"

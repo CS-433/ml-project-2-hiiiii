@@ -2,6 +2,7 @@ import torch
 # from models.model import UNET
 from models.vggunet import VGGUNET
 # from models.resunet import RESUNET
+# from models.vggresunet import VGGRESUNET
 
 ################################################################################
 # CONSTANTS

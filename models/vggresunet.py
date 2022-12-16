@@ -76,11 +76,11 @@ class QuadrupleConv(nn.Module):
         y = self.bn2(y)
         y = self.relu(y)
 
-        y = self.conv3(x)
+        y = self.conv3(y)
         y = self.bn3(y)
         y = self.relu(y)
 
-        y = self.conv4(x)
+        y = self.conv4(y)
         y = self.bn4(y)
 
         if self.sample is not None:

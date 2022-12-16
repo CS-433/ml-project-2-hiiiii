@@ -1,14 +1,14 @@
 import torch
 # from models.model import UNET
-from models.vggunet import VGGUNET
+# from models.vggunet import VGGUNET
 # from models.resunet import RESUNET
-# from models.vggresunet import VGGRESUNET
+from models.vggresunet import VGGRESUNET
 
 ################################################################################
 # CONSTANTS
 ################################################################################
 
-MODEL = VGGUNET
+MODEL = VGGRESUNET
 IMAGE_HEIGHT = 400
 TEST_IMAGE_HEIGHT = 608
 IMAGE_WIDTH = 400

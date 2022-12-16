@@ -1,7 +1,8 @@
 import torch
 import torch.nn as nn
 import torchvision.transforms.functional as TF
-from constants import PROB_DROPOUT
+
+PROB_DROPOUT = 0.5
 
 VGG_types = {
     "VGG11": [64, "M", 128, "M", 256, 256, "M", 512, 512, "M", 512, 512, "M"],

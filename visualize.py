@@ -3,6 +3,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 
+################################################################################
+# VISUALIZATION
+################################################################################
+
 def load_image(infilename):
     data = mpimg.imread(infilename)
     return data

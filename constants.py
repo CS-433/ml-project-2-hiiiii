@@ -1,5 +1,13 @@
 import torch
+# from models.model import UNET
+from models.vggunet import VGGUNET
+# from models.resunet import RESUNET
 
+################################################################################
+# CONSTANTS
+################################################################################
+
+MODEL = VGGUNET
 IMAGE_HEIGHT = 400
 TEST_IMAGE_HEIGHT = 608
 IMAGE_WIDTH = 400
@@ -16,4 +24,3 @@ BATCH_SIZE = 18
 NUM_WORKERS = 4
 PIN_MEMORY = True
 NUM_EPOCHS = 15
-PROB_DROPOUT = 0.5

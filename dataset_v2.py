@@ -3,8 +3,13 @@ import cv2
 from torch.utils.data import Dataset
 import numpy as np
 
+################################################################################
+# DATASET
+################################################################################
+
 class RoadDataset(Dataset):
     def __init__(self, image_dir, mask_dir, transforms=[]):
+        '''Initialize the dataset'''
         # at least the normalization should be applied
         if transforms == []:
             raise ValueError("transforms cannot be empty")
@@ -15,9 +20,11 @@ class RoadDataset(Dataset):
         self.mask_names = sorted(os.listdir(mask_dir))
 
     def __len__(self):
+        '''Return the length of the dataset'''
         return len(self.image_names) * len(self.transforms)
 
     def __getitem__(self, idx):
+        '''Return the image and mask at the given index'''
         # get image and mask path
         image_idx = idx % len(self.image_names)
         image_path = os.path.join(self.image_dir, self.image_names[image_idx])

@@ -9,4 +9,6 @@ __pycache__/
 checkpoints/
 data_history/
 .ipynb_checkpoints/
-
+results*/
+submission_*.csv
+test.py

@@ -3,7 +3,12 @@ from utils import *
 import constants as cst
 from transforms_v2 import *
 
+################################################################################
+# TRAINING
+################################################################################
+
 def train_epoch(model, optimizer, criterion, scheduler, train_loader, epoch, device):
+    '''Train the model for one epoch'''
     print(f"Epoch {epoch+1}/{cst.NUM_EPOCHS}")
     model.train()
     train_loss = 0
@@ -33,6 +38,7 @@ def train_epoch(model, optimizer, criterion, scheduler, train_loader, epoch, dev
 
 @torch.no_grad()
 def validate(model, criterion, val_loader, device):
+    '''Validate the model'''
     model.eval()
     val_loss = 0
     val_f1 = 0
@@ -52,23 +58,18 @@ def validate(model, criterion, val_loader, device):
     return val_loss, val_f1
 
 def train(model, optimizer, criterion, scheduler, train_loader, val_loader):
+    '''Train the model'''
     train_loss_history = []
     train_f1_history = []
     val_loss_history = []
     val_f1_history = []
-
     for epoch in range(cst.NUM_EPOCHS):
-
         train_loss, train_f1 = train_epoch(model, optimizer, criterion, scheduler, train_loader, epoch, cst.DEVICE)
-
         train_loss_history.append(train_loss)
         train_f1_history.append(train_f1)
-
         val_loss, val_f1 = validate(model, criterion, val_loader, cst.DEVICE)
-
         val_loss_history.append(val_loss)
         val_f1_history.append(val_f1)
-
         # save model if the validation loss is the lowest so far
         if val_loss == min(val_loss_history):
             checkpoint = {
@@ -76,8 +77,4 @@ def train(model, optimizer, criterion, scheduler, train_loader, val_loader):
                 "optimizer":optimizer.state_dict(),
             }
             save_checkpoint(checkpoint)
-            save_predictions_as_imgs(
-                val_loader, model, folder="saved_images/", device=cst.DEVICE
-            )
-    
     return train_loss_history, train_f1_history, val_loss_history, val_f1_history

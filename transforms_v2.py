@@ -31,7 +31,7 @@ list_of_random_rotations = [
 
 def add_rotations(transforms):
     '''Combine all transforms with all rotations'''
-    new_transforms = transforms.copy()
+    new_transforms = [] #transforms.copy()
     for transform in transforms:
         for rotation in list_of_random_rotations:
             new_transforms.append([A.Rotate(limit=rotation, p=1.0), *transform])

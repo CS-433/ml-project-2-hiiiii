@@ -7,7 +7,7 @@ train_data_x4.zip
 saved_images/
 __pycache__/
 checkpoints/
-data_history/
+data_history
 .ipynb_checkpoints/
 results*/
 test.py

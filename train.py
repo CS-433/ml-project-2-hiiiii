@@ -76,5 +76,11 @@ def train(model, optimizer, criterion, scheduler, train_loader, val_loader):
                 "state_dict": model.state_dict(),
                 "optimizer":optimizer.state_dict(),
             }
-            save_checkpoint(checkpoint)
+            save_checkpoint(checkpoint, filename="min_val_loss.pth.tar")
+        if val_f1 == max(val_f1_history):
+            checkpoint = {
+                "state_dict": model.state_dict(),
+                "optimizer":optimizer.state_dict(),
+            }
+            save_checkpoint(checkpoint, filename="max_val_f1.pth.tar")
     return train_loss_history, train_f1_history, val_loss_history, val_f1_history

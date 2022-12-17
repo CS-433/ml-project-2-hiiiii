@@ -20,18 +20,14 @@ list_of_transforms = [
 ]
 
 list_of_random_rotations = [
-    # (0, 45),
-    # (45, 90),
-    # (90, 135),
-    # (135, 180),
-    # (180, 225),
-    # (225, 270),
-    # (270, 315),
-    # (315, 360)
-    (0, 90),
-    (90, 180),
-    (180, 270),
-    (270, 360)
+    (0, 45),
+    (45, 90),
+    (90, 135),
+    (135, 180),
+    (180, 225),
+    (225, 270),
+    (270, 315),
+    (315, 360),
 ]
 
 def add_rotations(transforms):
@@ -78,9 +74,13 @@ list_of_val_transforms = [
     A.HorizontalFlip(p=1),
     A.VerticalFlip(p=1),
     A.Transpose(p=1),
+    A.Rotate(limit=(45, 45), p=1.0),
     A.Rotate(limit=(90, 90), p=1.0),
+    A.Rotate(limit=(135, 135), p=1.0),
     A.Rotate(limit=(180, 180), p=1.0),
+    A.Rotate(limit=(225, 225), p=1.0),
     A.Rotate(limit=(270, 270), p=1.0),
+    A.Rotate(limit=(315, 315), p=1.0),
 ]
 
 list_of_inverse_val_transforms = [
@@ -88,9 +88,13 @@ list_of_inverse_val_transforms = [
     A.HorizontalFlip(p=1),
     A.VerticalFlip(p=1),
     A.Transpose(p=1),
+    A.Rotate(limit=(-45, -45), p=1.0),
     A.Rotate(limit=(-90, -90), p=1.0),
+    A.Rotate(limit=(-135, -135), p=1.0),
     A.Rotate(limit=(-180, -180), p=1.0),
-    A.Rotate(limit=(-270, -270), p=1.0)
+    A.Rotate(limit=(-225, -225), p=1.0),
+    A.Rotate(limit=(-270, -270), p=1.0),
+    A.Rotate(limit=(-315, -315), p=1.0),
 ]
 
 def get_test_transforms():

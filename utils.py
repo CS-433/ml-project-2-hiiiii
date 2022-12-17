@@ -81,4 +81,4 @@ def f1_score(predictions, targets):
 
 def save_array_data(data, filename):
     '''Save the data of an array'''
-    np.savetxt("data_history/" + filename + ".dat", data, delimiter="\n")
+    np.savetxt("data_history/" + filename, data, delimiter="\n")

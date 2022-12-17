@@ -77,6 +77,12 @@ list_of_val_transforms = [
     A.Rotate(limit=(90, 90), p=1.0),
     A.Rotate(limit=(180, 180), p=1.0),
     A.Rotate(limit=(270, 270), p=1.0),
+    A.GaussianBlur(p=1),
+    A.GaussNoise(p=1),
+    A.RandomBrightnessContrast(p=1),
+    A.RandomGamma(p=1),
+    A.ChannelShuffle(p=1),
+    A.ChannelDropout(channel_drop_range=(1, 2), fill_value=0, p=1),
 ]
 
 list_of_inverse_val_transforms = [
@@ -87,6 +93,12 @@ list_of_inverse_val_transforms = [
     A.Rotate(limit=(-90, -90), p=1.0),
     A.Rotate(limit=(-180, -180), p=1.0),
     A.Rotate(limit=(-270, -270), p=1.0),
+    A.Compose([]),
+    A.Compose([]),
+    A.Compose([]),
+    A.Compose([]),
+    A.Compose([]),
+    A.Compose([]),
 ]
 
 def get_test_transforms():

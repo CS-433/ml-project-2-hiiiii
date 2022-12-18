@@ -14,16 +14,16 @@ VGG_types = {
 class DoubleConv(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(DoubleConv, self).__init__()
-        self.conv1 = nn.Conv2d(in_channels, out_channels, 3, 1, 2, 2, bias=False)
+        self.conv1 = nn.Conv2d(in_channels, out_channels, 3, 1, 1, bias=False)
         self.bn1 = nn.BatchNorm2d(out_channels)
-        self.conv2 = nn.Conv2d(out_channels, out_channels, 3, 1, 2, 2, bias=False)
+        self.conv2 = nn.Conv2d(out_channels, out_channels, 3, 1, 1, bias=False)
         self.bn2 = nn.BatchNorm2d(out_channels)
         self.relu = nn.ReLU(inplace=True)
 
         self.sample = None
         if in_channels != out_channels:
             self.sample = nn.Sequential(
-                nn.Conv2d(in_channels, out_channels, 1, 1, 1, 2, bias=False),
+                nn.Conv2d(in_channels, out_channels, 1, 1, 0, bias=False),
                 nn.BatchNorm2d(out_channels),
             )
 
@@ -48,20 +48,20 @@ class DoubleConv(nn.Module):
 class QuadrupleConv(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(QuadrupleConv, self).__init__()
-        self.conv1 = nn.Conv2d(in_channels, out_channels, 3, 1, 2, 2, bias=False)
+        self.conv1 = nn.Conv2d(in_channels, out_channels, 3, 1, 1, bias=False)
         self.bn1 = nn.BatchNorm2d(out_channels)
-        self.conv2 = nn.Conv2d(out_channels, out_channels, 3, 1, 2, 2, bias=False)
+        self.conv2 = nn.Conv2d(out_channels, out_channels, 3, 1, 1, bias=False)
         self.bn2 = nn.BatchNorm2d(out_channels)
-        self.conv3 = nn.Conv2d(out_channels, out_channels, 3, 1, 2, 2, bias=False)
+        self.conv3 = nn.Conv2d(out_channels, out_channels, 3, 1, 1, bias=False)
         self.bn3 = nn.BatchNorm2d(out_channels)
-        self.conv4 = nn.Conv2d(out_channels, out_channels, 3, 1, 2, 2, bias=False)
+        self.conv4 = nn.Conv2d(out_channels, out_channels, 3, 1, 1, bias=False)
         self.bn4 = nn.BatchNorm2d(out_channels)
         self.relu = nn.ReLU(inplace=True)
 
         self.sample = None
         if in_channels != out_channels:
             self.sample = nn.Sequential(
-                nn.Conv2d(in_channels, out_channels, 1, 1, 1, 2, bias=False),
+                nn.Conv2d(in_channels, out_channels, 1, 1, 0, bias=False),
                 nn.BatchNorm2d(out_channels),
             )
 
@@ -94,10 +94,10 @@ class QuadrupleConv(nn.Module):
 class DoubleConvBottleneck(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(DoubleConvBottleneck, self).__init__()
-        self.conv1 = nn.Conv2d(in_channels, out_channels, 3, 1, 2, 2, bias=False)
+        self.conv1 = nn.Conv2d(in_channels, out_channels, 3, 1, 1, bias=False)
         self.bn1 = nn.BatchNorm2d(out_channels)
         self.drop1 = nn.Dropout(p=PROB_DROPOUT)
-        self.conv2 = nn.Conv2d(out_channels, out_channels, 3, 1, 2, 2, bias=False)
+        self.conv2 = nn.Conv2d(out_channels, out_channels, 3, 1, 1, bias=False)
         self.bn2 = nn.BatchNorm2d(out_channels)
         self.drop2 = nn.Dropout(p=PROB_DROPOUT)
         self.relu = nn.ReLU(inplace=True)
@@ -105,7 +105,7 @@ class DoubleConvBottleneck(nn.Module):
         self.sample = None
         if in_channels != out_channels:
             self.sample = nn.Sequential(
-                nn.Conv2d(in_channels, out_channels, 1, 1, 1, 2, bias=False),
+                nn.Conv2d(in_channels, out_channels, 1, 1, 0, bias=False),
                 nn.BatchNorm2d(out_channels),
             )
 

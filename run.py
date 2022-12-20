@@ -7,6 +7,7 @@ from utils import *
 from transforms_v2 import *
 from train import *
 from prediction import *
+from loss import *
 
 ################################################################################
 # ENTRY POINT OF THE PROGRAM
@@ -50,7 +51,8 @@ def main():
         pin_memory=cst.PIN_MEMORY,
     )
     # define loss function, optimizer and schedulers
-    criterion = torch.nn.BCEWithLogitsLoss()
+    criterion = DiceLoss()
+    # criterion = torch.nn.BCEWithLogitsLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=cst.LEARNING_RATE, weight_decay=cst.WEIGHT_DECAY)
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
         optimizer,

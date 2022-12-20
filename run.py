@@ -83,7 +83,7 @@ def main():
     print("Done")
     # load best model
     print("Loading best model...")
-    load_checkpoint(torch.load("checkpoints/my_checkpoint.pth.tar"), model)
+    load_checkpoint(torch.load("checkpoints/max_val_f1.pth.tar"), model)
     print("Done")
     # predict on test data
     print("Predicting on test data...")

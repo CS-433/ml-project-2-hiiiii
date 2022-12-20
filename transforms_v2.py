@@ -11,12 +11,12 @@ list_of_transforms = [
     A.HorizontalFlip(p=1),
     A.VerticalFlip(p=1),
     A.Transpose(p=1),
-    # A.GaussianBlur(p=1),
-    # A.GaussNoise(p=1),
-    # A.RandomBrightnessContrast(p=1),
-    # A.RandomGamma(p=1),
-    # A.ChannelShuffle(p=1),
-    # A.ChannelDropout(channel_drop_range=(1, 2), fill_value=0, p=1),
+    A.GaussianBlur(p=1),
+    A.GaussNoise(p=1),
+    A.RandomBrightnessContrast(p=1),
+    A.RandomGamma(p=1),
+    A.ChannelShuffle(p=1),
+    A.ChannelDropout(channel_drop_range=(1, 2), fill_value=0, p=1),
 ]
 
 list_of_random_rotations = [

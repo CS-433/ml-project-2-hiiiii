@@ -70,12 +70,12 @@ def train(model, optimizer, criterion, scheduler, train_loader, val_loader):
         val_loss, val_f1 = validate(model, criterion, val_loader, cst.DEVICE)
         val_loss_history.append(val_loss)
         val_f1_history.append(val_f1)
-        if val_loss == min(val_loss_history):
-            checkpoint = {
-                "state_dict": model.state_dict(),
-                "optimizer":optimizer.state_dict(),
-            }
-            save_checkpoint(checkpoint, filename="checkpoints/min_val_loss.pth.tar")
+        # if val_loss == min(val_loss_history):
+        #     checkpoint = {
+        #         "state_dict": model.state_dict(),
+        #         "optimizer":optimizer.state_dict(),
+        #     }
+        #     save_checkpoint(checkpoint, filename="checkpoints/min_val_loss.pth.tar")
         if val_f1 == max(val_f1_history):
             checkpoint = {
                 "state_dict": model.state_dict(),

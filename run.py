@@ -7,7 +7,6 @@ from utils import *
 from transforms_v2 import *
 from train import *
 from prediction import *
-from loss import *
 
 ################################################################################
 # ENTRY POINT OF THE PROGRAM

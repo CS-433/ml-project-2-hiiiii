@@ -6,7 +6,7 @@ Run the script `setup.sh` to download the required packages and data. The train 
 
 ## Run
 
-Run the python file `run.py` to train the model and generate the submission file. The run should take about 2:30 hours on a _RTX 3090_ GPU and about 3:00 hours with the additional parking images.
+Run the python file `run.py` to train the model and generate the submission file. The run should take about 2:30 hours on a _RTX 3090_ GPU and about 3:30 hours with the additional parking images.
 
 ## Folders and Files
 

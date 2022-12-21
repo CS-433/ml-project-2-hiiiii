@@ -1,8 +1,5 @@
 import torch
-# from models.model import UNET
-# from models.vggunet import VGGUNET
-# from models.resunet import RESUNET
-from models.vggresunet import VGGRESUNET
+from model.vggresunet import VGGRESUNET
 
 ################################################################################
 # CONSTANTS
@@ -21,7 +18,7 @@ TRAIN_MASK_DIR = "train_data/train_masks/"
 VAL_IMAGE_DIR = "train_data/val_images/"
 VAL_MASK_DIR = "train_data/val_masks/"
 TEST_IMAGE_DIR = "test_data/"
-BATCH_SIZE = 30
+BATCH_SIZE = 18
 NUM_WORKERS = 4
 PIN_MEMORY = True
-NUM_EPOCHS = 30
+NUM_EPOCHS = 1

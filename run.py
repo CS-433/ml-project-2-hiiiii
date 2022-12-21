@@ -3,8 +3,8 @@ import os
 import sys
 
 import constants as cst
-from utils import *
-from transforms_v2 import *
+from utils.utils import *
+from data.transforms import *
 from train import *
 from prediction import *
 
@@ -91,7 +91,7 @@ def main():
     print("Done")
     # run mask_to_submission.py
     print("Running mask_to_submission.py...")
-    os.system("python3 mask_to_submission.py")
+    os.system("python3 ./utils/mask_to_submission.py")
     print("Done")
 
 if __name__ == "__main__":

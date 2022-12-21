@@ -1,8 +1,8 @@
 import torch
 import numpy as np
-from dataset_v2 import RoadDataset
+from data.dataset import RoadDataset
 from torch.utils.data import DataLoader
-from transforms_v2 import *
+from data.transforms import *
 
 ################################################################################
 # UTILS

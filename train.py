@@ -1,7 +1,7 @@
 from tqdm import tqdm
-from utils import *
+from utils.utils import *
 import constants as cst
-from transforms_v2 import *
+from data.transforms import *
 
 ################################################################################
 # TRAINING

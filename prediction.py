@@ -4,7 +4,7 @@ import cv2
 import os
 import numpy as np
 import constants as cst
-from transforms_v2 import *
+from data.transforms import *
 
 ################################################################################
 # PREDICTION

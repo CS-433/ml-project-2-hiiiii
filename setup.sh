@@ -5,7 +5,7 @@ WITH_PARKING=0
 # Create directories
 echo "Creating directories..."
 mkdir -p checkpoints
-mkdir -p data_history
+mkdir -p run_history
 
 # Download python libraries
 echo "Downloading python libraries..."

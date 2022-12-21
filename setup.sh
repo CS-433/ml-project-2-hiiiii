@@ -29,7 +29,6 @@ rm -rf train_data_parking
 rm -rf test_data
 if [ $WITH_PARKING -eq 1 ]; then
     unzip train_data_parking.zip > /dev/null
-    mv train_data_parking train_data
 else
     unzip train_data.zip > /dev/null
 fi

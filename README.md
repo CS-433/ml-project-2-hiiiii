@@ -2,7 +2,7 @@
 
 ## Setup
 
-Run the script `setup.sh` to download the required packages and data. The train data with additional parking images can be obtained by change the `WITH_PARKING` variable in `setup.sh` to `1`.
+Run the script `setup.sh` to download the required packages and data. The train data with additional parking images can be obtained by changing the `WITH_PARKING` variable in `setup.sh` to `1`.
 
 ## Run
 

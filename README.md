@@ -8,6 +8,8 @@ Run the script `setup.sh` to download the required packages and data. The train 
 
 Run the python file `run.py` to train the model and generate the submission file. The run should take about 2:30 hours on a _RTX 3090_ GPU and about 3:30 hours with the additional parking images.
 
+The number of epochs and the batch size can be modified in the `constants.py` file.
+
 ## Folders and Files
 
 - `checkpoints/` contains the checkpoints of the trained model (created with the `setup.sh` script).
